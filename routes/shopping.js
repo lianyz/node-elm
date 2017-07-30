@@ -6,7 +6,9 @@ import Food from '../controller/shopping/food'
 import Category from '../controller/shopping/category'
 import Check from '../middlewares/check'
 
+
 const router = express.Router();
+
 
 router.post('/addshop', Check.checkAdmin, Shop.addShop);
 router.get('/restaurants', Shop.getRestaurants);
