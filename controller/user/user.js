@@ -106,6 +106,85 @@ class User extends BaseComponent{
 		}
 	}
 
+    // 更新用户信息
+	async updateUser(req, res, next){
+		const form = new formidable.IncomingForm();
+		form.parse(req, async (err, fields, files) => {
+			if (err) {
+				console.log('获取用户信息form出错', err);
+				res.send({
+					status: 0,
+					type: 'ERROR_FORM',
+					message: '表单信息错误',
+				})
+				return 
+			}
+
+			console.dir(fields);
+
+			const {loginname, password, username, phone, unit, id} = fields;
+
+			try{
+				if (!loginname) {
+					throw new Error('登录名称错误');
+				}else if(!password){
+					throw new Error('登录密码错误');
+				}else if(!username){
+					throw new Error('用户姓名错误');
+				}else if(!phone){
+					throw new Error('用户电话错误');
+				}else if(!unit){
+					throw new Error('所属单位错误');
+				}else if(!id || !Number(id)){
+					throw new Error('用户ID错误');
+				}
+				let newData;
+				newData = {loginname, password, username, phone, unit, id}
+	
+				await UserModel.findOneAndUpdate({id}, {$set: newData});
+				res.send({
+					status: 1,
+					success: '修改用户信息成功',
+				})
+			}catch(err){
+				console.log(err.message, err);
+				console.dir(newData);
+				res.send({
+					status: 0,
+					type: 'ERROR_UPDATE_RESTAURANT',
+					message: '更新用户信息失败',
+				})
+			}
+		})
+	}
+
+	async deleteUser(req, res, next){
+		const user_id = req.params.user_id;
+		if (!user_id || !Number(user_id)) {
+			console.log('user_id参数错误');
+			res.send({
+				status: 0,
+				type: 'ERROR_PARAMS',
+				message: 'user_id参数错误',
+			})
+			return 
+		}
+		try{
+			await UserModel.remove({id: user_id});
+			res.send({
+				status: 1,
+				success: '删除用户成功',
+			})
+		}catch(err){
+			console.log('删除用户失败', err);
+			res.send({
+				status: 0,
+				type: 'DELETE_USER_FAILED',
+				message: '删除用户失败',
+			})
+		}
+	}
+
 	//获取餐馆列表
 	async getRestaurants(req, res, next){
 		const {

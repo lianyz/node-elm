@@ -19,5 +19,8 @@ router.post('/update/avatar/:admin_id', Admin.updateAvatar);
 router.post('/addUser', Check.checkAdmin, User.addUser);
 router.get('/userlist', User.getUserList);
 router.get('/usercount', User.getUserCount);
+router.post('/updateuser', Check.checkAdmin, User.updateUser);
+router.delete('/deleteuser/:user_id', Check.checkAdmin, User.deleteUser);
+
 
 export default router
