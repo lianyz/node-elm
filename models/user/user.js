@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
 	phone: String,
 	unit: String,
 	id: Number,
+	create_time: String,
 });
 
 userSchema.index({ id: 1 });

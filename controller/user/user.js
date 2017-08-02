@@ -3,6 +3,7 @@
 import UserModel from '../../models/user/user'
 import BaseComponent from '../../prototype/baseComponent'
 import formidable from 'formidable'
+import dtime from 'time-formater'
 
 class User extends BaseComponent{
 	constructor(){
@@ -54,6 +55,7 @@ class User extends BaseComponent{
 				phone: fields.phone,
 				unit: fields.unit,
 				id: user_id,
+				create_time: dtime().format('YYYY-MM-DD HH:mm'),
 			}
 
 			try{
