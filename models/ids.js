@@ -15,6 +15,7 @@ const idsSchema = new mongoose.Schema({
 	sku_id: Number, 
 	admin_id: Number,
 	statis_id: Number,
+	well_id: Number,
 });
 
 const Ids = mongoose.model('Ids', idsSchema);
@@ -34,6 +35,7 @@ Ids.findOne((err, data) => {
 			sku_id: 0, 
 			admin_id: 0,
 			statis_id: 0,
+			well_id: 0,
 		});
 		newIds.save();
 	}

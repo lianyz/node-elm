@@ -5,11 +5,13 @@ import Admin from '../controller/admin/admin'
 import Check from '../middlewares/check'
 
 import User from '../controller/user/user'
+import Well from '../controller/well/well'
 
 const router = express.Router()
 
 router.post('/login', Admin.login);
 // router.post('/register', Admin.register);
+
 router.get('/singout', Admin.singout);
 router.get('/all', Admin.getAllAdmin);
 router.get('/count', Admin.getAdminCount);
@@ -22,5 +24,10 @@ router.get('/usercount', User.getUserCount);
 router.post('/updateuser', Check.checkAdmin, User.updateUser);
 router.delete('/deleteuser/:user_id', Check.checkAdmin, User.deleteUser);
 
+router.post('/addWell', Check.checkAdmin, Well.addWell);
+router.get('/welllist', Well.getWellList);
+router.get('/wellcount', Well.getWellCount);
+router.post('/updatewell', Check.checkAdmin, Well.updateWell);
+router.delete('/deletewell/:well_id', Check.checkAdmin, Well.deleteWell);
 
 export default router
