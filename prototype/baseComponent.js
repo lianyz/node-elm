@@ -112,10 +112,10 @@ export default class BaseComponent {
 				try{
 					const key = imgName + extname;
 					await fs.rename(files.file.path, repath);
-					const token = this.uptoken('node-elm', key);
-					const qiniuImg = await this.uploadFile(token.toString(), key, repath);
-					fs.unlink(repath);
-					resolve(qiniuImg)
+					// const token = this.uptoken('node-elm', key);
+					// const qiniuImg = await this.uploadFile(token.toString(), key, repath);
+					// fs.unlink(repath);
+					resolve(repath)
 				}catch(err){
 					console.log('保存至七牛失败', err);
 					fs.unlink(files.file.path)

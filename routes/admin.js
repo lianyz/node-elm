@@ -23,6 +23,8 @@ router.get('/userlist', User.getUserList);
 router.get('/usercount', User.getUserCount);
 router.post('/updateuser', Check.checkAdmin, User.updateUser);
 router.delete('/deleteuser/:user_id', Check.checkAdmin, User.deleteUser);
+router.get('/wellCountOfUser', User.getWellCountOfUser);
+router.get('/wellListOfUser', User.getWellListOfUser);
 
 router.post('/addWell', Check.checkAdmin, Well.addWell);
 router.get('/welllist', Well.getWellList);

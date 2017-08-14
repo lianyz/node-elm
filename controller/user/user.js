@@ -91,6 +91,40 @@ class User extends BaseComponent{
 			})
 		}
 	}
+
+	async getWellCountOfUser(req, res, next){
+		const { user_id } = req.query;
+		try{
+			const count = await UserModel.wellCountOfUser(user_id);
+			res.send({
+				status: 1,
+				count,
+			})
+		}catch(err){
+			console.log('获取用户管理的油井数量失败', err);
+			res.send({
+				status: 0,
+				type: 'ERROR_TO_GET_USER_COUNT',
+				message: '获取用户管理的油井数量失败'
+			})
+		}
+	}
+
+	async getWellListOfUser(req, res, next){
+		const { user_id } = req.query;
+		try{
+			const wellList = await UserModel.wellListOfUser(user_id);
+			res.send(wellList);
+		}catch(err){
+			console.log('获取用户管理的油井数量失败', err);
+			res.send({
+				status: 0,
+				type: 'ERROR_TO_GET_USER_COUNT',
+				message: '获取用户管理的油井数量失败'
+			})
+		}
+	}
+
 	async getUserCount(req, res, next){
 		try{
 			const count = await UserModel.count();
