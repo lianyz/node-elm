@@ -1,6 +1,8 @@
 'use strict';
 
 import UserModel from '../../models/user/user'
+import WellModel from '../../models/well/well'
+
 import BaseComponent from '../../prototype/baseComponent'
 import formidable from 'formidable'
 import dtime from 'time-formater'
@@ -95,6 +97,7 @@ class User extends BaseComponent{
 	async getWellCountOfUser(req, res, next){
 		const { user_id } = req.query;
 		try{
+			console.log('user_id: ' + user_id)
 			const count = await UserModel.wellCountOfUser(user_id);
 			res.send({
 				status: 1,
@@ -110,17 +113,88 @@ class User extends BaseComponent{
 		}
 	}
 
+	async addWellToUser(req, res, next) {
+
+        const form = new formidable.IncomingForm();
+		form.parse(req, async (err, fields, files) => {
+			if (err) {
+				console.log('获取信息出错', err);
+				res.send({
+					status: 0,
+					type: 'ERROR_FORM',
+					message: '表单信息错误',
+				})
+				return 
+			}
+
+			const { well_id, user_id } = fields;
+			try{
+				const result = await UserModel.addWellToUser(well_id, user_id);
+				res.send({
+					status: 1,
+					result,
+				})
+			}catch(err){
+				console.log('添加油井至用户失败', err);
+				res.send({
+					status: 0,
+					type: 'ERROR_TO_ADD_WELL_TO_USER',
+					message: '添加油井至用户失败'
+				})
+			}
+
+		})
+	}
+
+	async removeWellFromUser(req, res, next) {
+
+        const form = new formidable.IncomingForm();
+		form.parse(req, async (err, fields, files) => {
+			if (err) {
+				console.log('获取信息出错', err);
+				res.send({
+					status: 0,
+					type: 'ERROR_FORM',
+					message: '表单信息错误',
+				})
+				return 
+			}
+
+			const { well_id, user_id } = fields;
+			try{
+				const result = await UserModel.removeWellFromUser(well_id, user_id);
+				res.send({
+					status: 1,
+					result,
+				})
+			}catch(err){
+				console.log('将油井从用户中移出失败', err);
+				res.send({
+					status: 0,
+					type: 'ERROR_TO_REMOVE_WELL_FROM_USER',
+					message: '将油井从用户中移出失败'
+				})
+			}
+
+		})
+	}
+
 	async getWellListOfUser(req, res, next){
 		const { user_id } = req.query;
 		try{
-			const wellList = await UserModel.wellListOfUser(user_id);
-			res.send(wellList);
+			const user = await UserModel.findOne({id: user_id})
+			const wells = await WellModel.find( {id: {$in: user.wells}} );
+
+			console.dir(user);
+			console.dir(wells);
+
+			res.send(wells);
 		}catch(err){
-			console.log('获取用户管理的油井数量失败', err);
+			console.log('获取用户管理的油井列表失败', err);
 			res.send({
 				status: 0,
 				type: 'ERROR_TO_GET_USER_COUNT',
-				message: '获取用户管理的油井数量失败'
+				message: '获取用户管理的油井列表失败'
 			})
 		}
 	}
