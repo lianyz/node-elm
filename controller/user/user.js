@@ -113,6 +113,27 @@ class User extends BaseComponent{
 		}
 	}
 
+	async getWellCountOfNotUser(req, res, next){
+		const { user_id } = req.query;
+		try{
+			const user = await UserModel.findOne({id: user_id})
+			const count = await WellModel.find( {id: {$nin: user.wells}} ).count();
+			// console.log('well_count: ' + count)
+
+			res.send({
+				status: 1,
+				count,
+			})
+		}catch(err){
+			console.log('获取非该用户管理的油井数量失败', err);
+			res.send({
+				status: 0,
+				type: 'ERROR_TO_GET_USER_COUNT',
+				message: '获取非该用户管理的油井数量失败'
+			})
+		}
+	}
+
 	async addWellToUser(req, res, next) {
 
         const form = new formidable.IncomingForm();
@@ -185,9 +206,6 @@ class User extends BaseComponent{
 			const user = await UserModel.findOne({id: user_id})
 			const wells = await WellModel.find( {id: {$in: user.wells}} );
 
-			console.dir(user);
-			console.dir(wells);
-
 			res.send(wells);
 		}catch(err){
 			console.log('获取用户管理的油井列表失败', err);
@@ -195,6 +213,26 @@ class User extends BaseComponent{
 				status: 0,
 				type: 'ERROR_TO_GET_USER_COUNT',
 				message: '获取用户管理的油井列表失败'
+			})
+		}
+	}
+
+	async getWellListOfNotUser(req, res, next){
+		const { user_id } = req.query;
+		try{
+			const user = await UserModel.findOne({id: user_id})
+			const wells = await WellModel.find( {id: {$nin: user.wells}} );
+
+            console.log('获取到的油井：');
+			// console.dir(wells);
+
+			res.send(wells);
+		}catch(err){
+			console.log('获取非该用户管理的油井列表失败', err);
+			res.send({
+				status: 0,
+				type: 'ERROR_TO_GET_USER_COUNT',
+				message: '获取非该用户管理的油井列表失败'
 			})
 		}
 	}

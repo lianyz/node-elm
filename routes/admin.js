@@ -25,6 +25,8 @@ router.post('/updateuser', Check.checkAdmin, User.updateUser);
 router.delete('/deleteuser/:user_id', Check.checkAdmin, User.deleteUser);
 router.get('/wellCountOfUser', User.getWellCountOfUser);
 router.get('/wellListOfUser', User.getWellListOfUser);
+router.get('/wellCountOfNotUser', User.getWellCountOfNotUser);
+router.get('/wellListOfNotUser', User.getWellListOfNotUser);
 router.post('/addWellToUser', User.addWellToUser);
 router.post('/removeWellFromUser', User.removeWellFromUser);
 
